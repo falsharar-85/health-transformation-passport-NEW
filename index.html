@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>جواز رحلة التحول الصحي</title>
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Tahoma,Arial,sans-serif;
+  background:linear-gradient(180deg,#eef9fc,#d9f3f6);
+  color:#123d65;
+}
+
+.wrap{
+  max-width:850px;
+  margin:auto;
+  padding:20px;
+}
+
+/* HEADER */
+.head{
+  background:white;
+  border-radius:25px;
+  padding:22px;
+  text-align:center;
+  box-shadow:0 5px 20px rgba(0,0,0,.10);
+  margin-bottom:20px;
+}
+
+.logo{
+  display:block;
+  max-width:230px;
+  max-height:140px;
+  margin:0 auto 12px;
+}
+
+.head h1{
+  margin:8px 0;
+  font-size:30px;
+  color:#123d65;
+}
+
+.department{
+  font-size:18px;
+  line-height:1.8;
+  font-weight:bold;
+  color:#177f9d;
+}
+
+/* PARTICIPANT CARD */
+.card{
+  background:white;
+  padding:20px;
+  border-radius:22px;
+  margin-bottom:20px;
+  box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
+
+.card h3{
+  text-align:center;
+  margin-top:0;
+  font-size:22px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.field label{
+  display:block;
+  margin-bottom:6px;
+  font-weight:bold;
+}
+
+.field input{
+  width:100%;
+  padding:12px;
+  border:1px solid #b9d8e2;
+  border-radius:12px;
+  font-size:16px;
+  font-family:Tahoma;
+}
+
+/* PROGRESS */
+.progressText{
+  text-align:center;
+  font-size:18px;
+  font-weight:bold;
+  margin-top:20px;
+}
+
+.bar{
+  width:100%;
+  height:16px;
+  background:#e1edf1;
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:10px;
+}
+
+.fill{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#4dc9cc,#087a9e);
+  transition:.4s;
+}
+
+/* STATIONS */
+.journey{
+  margin-top:20px;
+}
+
+.journey h2{
+  text-align:center;
+  margin-bottom:18px;
+}
+
+.stations{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.station{
+  background:white;
+  min-height:120px;
+  border-radius:22px;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  font-size:20px;
+  font-weight:bold;
+  cursor:pointer;
+  border:3px solid transparent;
+  box-shadow:0 4px 12px rgba(0,0,0,.08);
+  transition:.25s;
+  user-select:none;
+}
+
+.station:hover{
+  transform:translateY(-2px);
+}
+
+.station small{
+  display:block;
+  margin-top:8px;
+  color:#5c7c91;
+  font-size:14px;
+}
+
+.station.done{
+  background:#e5fbf6;
+  border-color:#39b99c;
+  color:#08775f;
+}
+
+.station.done::after{
+  content:"✓ تم إكمال المحطة";
+  margin-top:10px;
+  font-size:14px;
+  color:#078266;
+}
+
+/* FINISH BUTTON */
+.finish{
+  width:100%;
+  margin-top:20px;
+  border:0;
+  border-radius:18px;
+  padding:17px;
+  font-size:20px;
+  font-family:Tahoma;
+  font-weight:bold;
+  color:white;
+  background:linear-gradient(90deg,#123d65,#138eaa);
+  cursor:pointer;
+}
+
+/* FINAL PASSPORT */
+.final{
+  display:none;
+  margin-top:25px;
+}
+
+.finalCard{
+  background:white;
+  border-radius:28px;
+  overflow:hidden;
+  box-shadow:0 8px 25px rgba(0,0,0,.15);
+  border:2px solid #c6e8ee;
+}
+
+.finalHeader{
+  background:linear-gradient(135deg,#123d65,#0d8aa6);
+  color:white;
+  padding:25px;
+  text-align:center;
+}
+
+.finalHeader h2{
+  font-size:30px;
+  margin:10px 0;
+}
+
+.finalLogo{
+  display:block;
+  max-width:190px;
+  max-height:110px;
+  margin:0 auto 12px;
+  background:white;
+  border-radius:15px;
+  padding:5px;
+}
+
+.passportBody{
+  padding:25px;
+}
+
+.passportTitle{
+  text-align:center;
+  font-size:23px;
+  font-weight:bold;
+  margin-bottom:20px;
+}
+
+.detail{
+  background:#f4fbfd;
+  border-radius:14px;
+  padding:13px;
+  margin:9px 0;
+  font-size:17px;
+}
+
+.completeBadge{
+  margin:22px auto;
+  padding:18px;
+  border-radius:50px;
+  text-align:center;
+  max-width:400px;
+  background:#e3faf3;
+  color:#08775f;
+  font-size:20px;
+  font-weight:bold;
+}
+
+.seals{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:7px;
+  margin-top:20px;
+}
+
+.seal{
+  background:#e7f6fa;
+  border:2px solid #55b9c8;
+  border-radius:50%;
+  aspect-ratio:1/1;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-weight:bold;
+  color:#123d65;
+}
+
+.printBtn{
+  width:100%;
+  margin-top:18px;
+  border:none;
+  border-radius:15px;
+  padding:15px;
+  font-size:18px;
+  font-family:Tahoma;
+  background:#123d65;
+  color:white;
+  cursor:pointer;
+}
+
+.footer{
+  text-align:center;
+  padding:20px 0 5px;
+  color:#55788a;
+}
+
+/* MOBILE */
+@media(max-width:700px){
+  .grid,
+  .stations{
+    grid-template-columns:1fr;
+  }
+
+  .head h1{
+    font-size:25px;
+  }
+
+  .wrap{
+    padding:12px;
+  }
+
+  .seals{
+    grid-template-columns:repeat(4,1fr);
+  }
+}
+
+/* PRINT */
+@media print{
+  body{
+    background:white;
+  }
+
+  .head,
+  .journey,
+  .card,
+  .footer{
+    display:none !important;
+  }
+
+  .wrap{
+    max-width:none;
+    margin:0;
+    padding:0;
+  }
+
+  .final{
+    display:block !important;
+    margin:0;
+  }
+
+  .printBtn{
+    display:none;
+  }
+
+  .finalCard{
+    box-shadow:none;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="head">
+
+    <img class="logo"
+         src="شعار التجمع.jpeg"
+         alt="شعار تجمع المدينة المنورة الصحي">
+
+    <h1>جواز رحلة التحول الصحي</h1>
+
+    <div class="department">
+      الإدارة التنفيذية للتمريض
+      <br>
+      إدارة تطوير التمريض
+    </div>
+
+  </div>
+
+  <!-- PARTICIPANT INFORMATION -->
+  <div class="card">
+
+    <h3>بيانات المشارك</h3>
+
+    <div class="grid">
+
+      <div class="field">
+        <label>الاسم</label>
+        <input id="name" type="text" placeholder="اكتب الاسم">
+      </div>
+
+      <div class="field">
+        <label>الإدارة / القسم</label>
+        <input id="dep" type="text" placeholder="اكتب الإدارة أو القسم">
+      </div>
+
+      <div class="field">
+        <label>المنشأة / المركز</label>
+        <input id="hospital" type="text" placeholder="اكتب المنشأة أو المركز">
+      </div>
+
+      <div class="field">
+        <label>التاريخ</label>
+        <input id="date" type="date">
+      </div>
+
+    </div>
+
+    <div class="progressText">
+      إنجاز رحلة التحول:
+      <span id="pct">0%</span>
+    </div>
+
+    <div class="bar">
+      <div class="fill" id="fill"></div>
+    </div>
+
+  </div>
+
+  <!-- JOURNEY -->
+  <div class="journey">
+
+    <h2>محطات رحلة التحول الصحي</h2>
+
+    <div class="stations">
+
+      <div class="station" onclick="toggleStation(this)">
+        ① التسجيل
+        <small>Registration</small>
+      </div>
+
+      <div class="station" onclick="toggleStation(this)">
+        ② مفهوم التحول الصحي
+        <small>Health Transformation</small>
+      </div>
+
+      <div class="station" onclick="toggleStation(this)">
+        ③ دور التمريض
+        <small>Nursing Role</small>
+      </div>
+
+      <div class="station" onclick="toggleStation(this)">
+        ④ تحدي القرار
+        <small>Decision Challenge</small>
+      </div>
+
+      <div class="station" onclick="toggleStation(this)">
+        ⑤ التقنية في الخدمة
+        <small>Digital Health</small>
+      </div>
+
+      <div class="station" onclick="toggleStation(this)">
+        ⑥ عجلة التحول
+        <small>Transformation Wheel</small>
+      </div>
+
+      <div class="station" onclick="toggleStation(this)">
+        ⑦ إنهاء الرحلة
+        <small>Journey Completion</small>
+      </div>
+
+    </div>
+
+    <button class="finish" onclick="finishJourney()">
+      🏆 إنهاء رحلة التحول الصحي
+    </button>
+
+  </div>
+
+  <!-- FINAL PASSPORT -->
+  <section class="final" id="final">
+
+    <div class="finalCard">
+
+      <div class="finalHeader">
+
+        <img class="finalLogo"
+             src="شعار التجمع.jpeg"
+             alt="شعار تجمع المدينة المنورة الصحي">
+
+        <h2>جواز رحلة التحول الصحي</h2>
+
+        <div>
+          الإدارة التنفيذية للتمريض
+          <br>
+          إدارة تطوير التمريض
+        </div>
+
+      </div>
+
+      <div class="passportBody">
+
+        <div class="passportTitle">
+          تم إكمال رحلة التحول الصحي بنجاح
+        </div>
+
+        <div class="detail">
+          <b>الاسم:</b>
+          <span id="pn"></span>
+        </div>
+
+        <div class="detail">
+          <b>الإدارة / القسم:</b>
+          <span id="pd"></span>
+        </div>
+
+        <div class="detail">
+          <b>المنشأة / المركز:</b>
+          <span id="ph"></span>
+        </div>
+
+        <div class="detail">
+          <b>التاريخ:</b>
+          <span id="pdate"></span>
+        </div>
+
+        <div class="completeBadge">
+          ✓ مكتمل — 100%
+        </div>
+
+        <div style="text-align:center;font-weight:bold;">
+          محطات الرحلة
+        </div>
+
+        <div class="seals">
+          <div class="seal">١ ✓</div>
+          <div class="seal">٢ ✓</div>
+          <div class="seal">٣ ✓</div>
+          <div class="seal">٤ ✓</div>
+          <div class="seal">٥ ✓</div>
+          <div class="seal">٦ ✓</div>
+          <div class="seal">٧ ✓</div>
+        </div>
+
+        <button class="printBtn" onclick="window.print()">
+          🖨️ طباعة الجواز
+        </button>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <div class="footer">
+    تجمع المدينة المنورة الصحي
+  </div>
+
+</div>
+
+<script>
+
+const stations = document.querySelectorAll(".station");
+
+function toggleStation(element){
+
+  element.classList.toggle("done");
+
+  updateProgress();
+}
+
+function updateProgress(){
+
+  const completed =
+    document.querySelectorAll(".station.done").length;
+
+  const percentage =
+    Math.round((completed / stations.length) * 100);
+
+  document.getElementById("pct").innerText =
+    percentage + "%";
+
+  document.getElementById("fill").style.width =
+    percentage + "%";
+}
+
+function finishJourney(){
+
+  const completed =
+    document.querySelectorAll(".station.done").length;
+
+  const name =
+    document.getElementById("name").value.trim();
+
+  if(name === ""){
+    alert("فضلاً اكتب اسم المشارك أولاً");
+    return;
+  }
+
+  if(completed < stations.length){
+    alert(
+      "لم تكتمل الرحلة بعد. أكمل جميع المحطات السبع أولاً."
+    );
+    return;
+  }
+
+  document.getElementById("pn").innerText =
+    document.getElementById("name").value;
+
+  document.getElementById("pd").innerText =
+    document.getElementById("dep").value || "—";
+
+  document.getElementById("ph").innerText =
+    document.getElementById("hospital").value || "—";
+
+  document.getElementById("pdate").innerText =
+    document.getElementById("date").value || "—";
+
+  const final =
+    document.getElementById("final");
+
+  final.style.display = "block";
+
+  final.scrollIntoView({
+    behavior:"smooth"
+  });
+}
+
+/* وضع تاريخ اليوم تلقائياً */
+const today = new Date();
+const yyyy = today.getFullYear();
+const mm = String(today.getMonth()+1).padStart(2,"0");
+const dd = String(today.getDate()).padStart(2,"0");
+
+document.getElementById("date").value =
+  yyyy + "-" + mm + "-" + dd;
+
+</script>
+
+</body>
+</html>
